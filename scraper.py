@@ -25,3 +25,7 @@ def collect():
             data_dict["time"].append(time)
             data_dict["count"].append(count)
             data_dict["maximum"].append(maximum)
+        else:
+            # compare the last run as to not collect redundant data
+            # TODO: finish
+            pass
