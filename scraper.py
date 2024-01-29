@@ -13,6 +13,8 @@ bakke_locations = ["Level 1 Fitness", "Level 2 Fitness", "Level 3 Fitness", "Lev
 last_run_nick = ""
 last_run_bakke = ""
 
+delimiter = "|"
+
 def update_nick_if_new_data():
     # load driver
     driver = webdriver.Firefox()
@@ -39,7 +41,7 @@ def update_nick_if_new_data():
         if location not in nick_locations:
             continue
         else:
-            nick_data.append((location + "|" + count + "|" + maximum + "|" + tracker_time))
+            nick_data.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
     
     # sort the data to standardize it
     nick_data.sort()
@@ -62,12 +64,60 @@ def update_nick_if_new_data():
     # quit the driver
     driver.quit()
 
-def update_bakke_if_new_data(last_run=""):
+def update_bakke_if_new_data():
+    driver = webdriver.Firefox()
+
+    # collect the nick data, put it into an array of strings temporarily, split by |
     bakke_data = []
-    pass
+
+    # load data and timestamp it
+    driver.get(url)
+    time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+    # add a bit of delay to let the counts load
+    sleep(2)
+
+    # grab all the trackers
+    trackers = driver.find_elements(By.CLASS_NAME, "live-tracker")
+
+    # parse data and load into nick_data
+    for tracker in trackers:
+        location = tracker.find_element(By.CLASS_NAME, "tracker-location").text
+        count = tracker.find_element(By.CLASS_NAME, "tracker-current-count.pending").text
+        maximum = tracker.find_element(By.CLASS_NAME, "tracker-max-count").text
+        tracker_time = time
+        if location not in nick_locations:
+            continue
+        else:
+            bakke_data.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
+    
+    # sort the data to standardize it
+    bakke_data.sort()
+
+    # initialize
+    this_run = ""
+
+    # set value
+    for string in bakke_data:
+        this_run += string
+    
+    # if the data has changed since the last run
+    if this_run != get_last_run_bakke():
+        #collect it
+        add_data_to_data_dict(bakke_data)
+
+        #set the string for next time so we don't have duplicate data
+        set_last_run_bakke(this_run)
+
+    # quit the driver
+    driver.quit()
 
 def add_data_to_data_dict(data):
+    # loop through each string
+    for raw_value in data:
 
+        #split based on delimiter
+        elements = raw_value.split(delimiter)
     pass
 
 ### getters and setters
@@ -87,30 +137,3 @@ def set_last_run_bakke(bakke):
 def get_last_run_bakke():
     global last_run_bakke
     return last_run_bakke
-
-def collect():
-    url = "https://recwell.wisc.edu/liveusage/"
-    response = requests.get(url)
-    response.raise_for_status()
-    soup = BeautifulSoup(response.content, 'html5lib')
-
-    trackers = soup.find_all("div", {"class": "live-tracker"})
-    # print(trackers)
-
-    data_dict = {"location" : [], "time" : [], "count" : [], "maximum" : []}
-    for tracker in trackers:
-        location = tracker.find("p", {"class": "tracker-location"}).get_text()
-        time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        count = tracker.find("span", {"class": "tracker-current-count pending"}).get_text()
-        maximum = tracker.find("span", {"class": "tracker-max-count"}).get_text()
-        # if len(data_dict["location"]) == 0:
-        #     # if we're doing the first run, just collect it
-        #     data_dict["location"].append(location)
-        #     data_dict["time"].append(time)
-        #     data_dict["count"].append(count)
-        #     data_dict["maximum"].append(maximum)
-        # else:
-        #     # compare the last run as to not collect redundant data
-        #     # TODO: finish
-        #     pass
-        print(location, count, maximum)
