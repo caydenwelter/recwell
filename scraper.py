@@ -4,7 +4,8 @@ import re
 import json
 from time import gmtime, strftime, sleep
 
-data_dict = {"location" : [], "time" : [], "count" : [], "maximum" : []}
+# init globals
+data = [["Location", "Count", "Max", "Timestamp"]]
 url = "https://recwell.wisc.edu/liveusage/"
 
 nick_locations = ["Nick Level 1 Fitness", "Nick Level 2 Fitness", "Nick Level 3 Fitness", "Nick Power House", "Nick Track", "Soderholm Family Aquatic Center", "Nick Courts 1 & 2", "Nick Courts 3-6", "Nick Courts 7 & 8"]
@@ -20,7 +21,7 @@ def update_nick_if_new_data():
     driver = webdriver.Firefox()
 
     # collect the nick data, put it into an array of strings temporarily, split by |
-    nick_data = []
+    nick_data_temp = []
 
     # load data and timestamp it
     driver.get(url)
@@ -41,22 +42,22 @@ def update_nick_if_new_data():
         if location not in nick_locations:
             continue
         else:
-            nick_data.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
+            nick_data_temp.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
     
     # sort the data to standardize it
-    nick_data.sort()
+    nick_data_temp.sort()
 
     # initialize
     this_run = ""
 
     # set value
-    for string in nick_data:
+    for string in nick_data_temp:
         this_run += string
     
     # if the data has changed since the last run
     if this_run != get_last_run_nick():
         #collect it
-        add_data_to_data_dict(nick_data)
+        add_data_to_data_dict(nick_data_temp)
 
         #set the string for next time so we don't have duplicate data
         set_last_run_nick(this_run)
@@ -67,8 +68,8 @@ def update_nick_if_new_data():
 def update_bakke_if_new_data():
     driver = webdriver.Firefox()
 
-    # collect the nick data, put it into an array of strings temporarily, split by |
-    bakke_data = []
+    # collect the bakke data, put it into an array of strings temporarily, split by |
+    bakke_data_temp = []
 
     # load data and timestamp it
     driver.get(url)
@@ -89,22 +90,22 @@ def update_bakke_if_new_data():
         if location not in nick_locations:
             continue
         else:
-            bakke_data.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
+            bakke_data_temp.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
     
     # sort the data to standardize it
-    bakke_data.sort()
+    bakke_data_temp.sort()
 
     # initialize
     this_run = ""
 
     # set value
-    for string in bakke_data:
+    for string in bakke_data_temp:
         this_run += string
     
     # if the data has changed since the last run
     if this_run != get_last_run_bakke():
         #collect it
-        add_data_to_data_dict(bakke_data)
+        add_data_to_data_dict(bakke_data_temp)
 
         #set the string for next time so we don't have duplicate data
         set_last_run_bakke(this_run)
@@ -120,10 +121,7 @@ def add_data_to_data_dict(data):
         elements = raw_value.split(delimiter)
 
         # add to data dict
-        data_dict["location"].append(elements[0])
-        data_dict["count"].append(elements[1])
-        data_dict["maximum"].append(elements[2])
-        data_dict["time"].append(elements[3])
+        data.append([elements[0], elements[1], elements[2], elements[3]])
     pass
 
 ### getters and setters
