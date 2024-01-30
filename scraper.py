@@ -5,7 +5,7 @@ import json
 from time import gmtime, strftime, sleep
 
 # init globals
-data = [["Location", "Count", "Max", "Timestamp"]]
+data_out = [["Location", "Count", "Max", "Timestamp"]]
 url = "https://recwell.wisc.edu/liveusage/"
 
 nick_locations = ["Nick Level 1 Fitness", "Nick Level 2 Fitness", "Nick Level 3 Fitness", "Nick Power House", "Nick Track", "Soderholm Family Aquatic Center", "Nick Courts 1 & 2", "Nick Courts 3-6", "Nick Courts 7 & 8"]
@@ -48,7 +48,7 @@ def update_nick_if_new_data():
     nick_data_temp.sort()
 
     # initialize
-    this_run = ""
+    this_run = get_last_run_nick()
 
     # set value
     for string in nick_data_temp:
@@ -57,7 +57,7 @@ def update_nick_if_new_data():
     # if the data has changed since the last run
     if this_run != get_last_run_nick():
         #collect it
-        add_data_to_data_dict(nick_data_temp)
+        add_data_to_data_lists(nick_data_temp)
 
         #set the string for next time so we don't have duplicate data
         set_last_run_nick(this_run)
@@ -96,7 +96,7 @@ def update_bakke_if_new_data():
     bakke_data_temp.sort()
 
     # initialize
-    this_run = ""
+    this_run = get_last_run_bakke()
 
     # set value
     for string in bakke_data_temp:
@@ -105,7 +105,7 @@ def update_bakke_if_new_data():
     # if the data has changed since the last run
     if this_run != get_last_run_bakke():
         #collect it
-        add_data_to_data_dict(bakke_data_temp)
+        add_data_to_data_lists(bakke_data_temp)
 
         #set the string for next time so we don't have duplicate data
         set_last_run_bakke(this_run)
@@ -113,16 +113,15 @@ def update_bakke_if_new_data():
     # quit the driver
     driver.quit()
 
-def add_data_to_data_dict(data):
+def add_data_to_data_lists(data):
     # loop through each string
     for raw_value in data:
 
         # split based on delimiter
         elements = raw_value.split(delimiter)
 
-        # add to data dict
-        data.append([elements[0], elements[1], elements[2], elements[3]])
-    pass
+        # add to data
+        data_out.append([elements[0], elements[1], elements[2], elements[3]])
 
 ### getters and setters
 
