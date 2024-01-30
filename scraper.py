@@ -116,8 +116,14 @@ def add_data_to_data_dict(data):
     # loop through each string
     for raw_value in data:
 
-        #split based on delimiter
+        # split based on delimiter
         elements = raw_value.split(delimiter)
+
+        # add to data dict
+        data_dict["location"].append(elements[0])
+        data_dict["count"].append(elements[1])
+        data_dict["maximum"].append(elements[2])
+        data_dict["time"].append(elements[3])
     pass
 
 ### getters and setters
