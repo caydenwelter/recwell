@@ -24,6 +24,7 @@ def write_csv(sig, frame):
     
     sys.exit(0)
 
+# catch when ctrl+c is pressed and save the csv file
 signal.signal(signal.SIGINT, write_csv)
 
 
