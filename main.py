@@ -18,9 +18,11 @@ def main():
 
 
 def write_csv(sig, frame):
-    # TODO: upon exit, write data to a csv file
-    output_string = ""
+    # upon exit, write data to a csv file
 
+    with open('out.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(scraper.data_out)
     
     sys.exit(0)
 
