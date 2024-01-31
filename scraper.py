@@ -87,7 +87,7 @@ def update_bakke_if_new_data():
         count = tracker.find_element(By.CLASS_NAME, "tracker-current-count.pending").text
         maximum = tracker.find_element(By.CLASS_NAME, "tracker-max-count").text
         tracker_time = time
-        if location not in nick_locations:
+        if location not in bakke_locations:
             continue
         else:
             bakke_data_temp.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
