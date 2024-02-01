@@ -3,10 +3,13 @@ from selenium.webdriver.common.by import By
 import re
 import json
 from time import gmtime, strftime, sleep
+from selenium.webdriver.firefox.options import Options
 
 # init globals
 data_out = [["Location", "Count", "Max", "Timestamp"]]
 url = "https://recwell.wisc.edu/liveusage/"
+options = Options()
+options.add_argument("--headless")
 
 nick_locations = ["Nick Level 1 Fitness", "Nick Level 2 Fitness", "Nick Level 3 Fitness", "Nick Power House", "Nick Track", "Soderholm Family Aquatic Center", "Nick Courts 1 & 2", "Nick Courts 3-6", "Nick Courts 7 & 8"]
 bakke_locations = ["Level 1 Fitness", "Level 2 Fitness", "Level 3 Fitness", "Level 4 Fitness", "Bakke Track", "Courts 1&2", "Courts 3&4", "Courts 5-8", "Orbit", "Willow Room", "Cove Pool", "Mount Mendota", "Skybox Suites", "SubZero Ice Center"]
@@ -18,7 +21,7 @@ delimiter = "|"
 
 def update_nick_if_new_data():
     # load driver
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=options)
 
     # collect the nick data, put it into an array of strings temporarily, split by |
     nick_data_temp = []
@@ -66,7 +69,7 @@ def update_nick_if_new_data():
     driver.quit()
 
 def update_bakke_if_new_data():
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=options)
 
     # collect the bakke data, put it into an array of strings temporarily, split by |
     bakke_data_temp = []
