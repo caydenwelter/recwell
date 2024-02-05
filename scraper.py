@@ -145,6 +145,21 @@ def add_data_to_data_lists(data):
         writer = csv.writer(f)
         writer.writerows(data_out)
     
+    # push the data file to remote
+    try:
+        print("Attempting file push")
+        os.system("git add out.csv")
+        print("Staged out.csv")
+        os.system("git commit -m 'update out.csv'")
+        print("Commited changes")
+        os.system("git push")
+        time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        print("Pushed file to remote at" + time)
+    except:
+        time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        print("Update failed at" + time + ". Exiting.")
+        exit(0)
+    
 
 ### getters and setters
 
