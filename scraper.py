@@ -131,7 +131,6 @@ def update_bakke_if_new_data():
     driver.quit()
 
 def add_data_to_data_lists(data):
-    bakke_flag = False
 
     # loop through each string
     for raw_value in data:
@@ -142,16 +141,10 @@ def add_data_to_data_lists(data):
         # add to data
         data_out.append([elements[0], elements[1], elements[2], elements[3]])
 
-        # set bakke flag. used for determining when to commit csv file
-        if elements[0] in bakke_locations:
-            bakke_flag = True
-
     with open('out.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(data_out)
     
-    if bakke_flag == True:
-        print("this is bakke data")
 
 ### getters and setters
 
