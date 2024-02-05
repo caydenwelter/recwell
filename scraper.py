@@ -15,7 +15,7 @@ options.add_argument("--headless")
 if os.name == "nt":
     path_to_chromedriver = "chromedriver.exe"
 elif os.name == "posix":
-    path_to_chromedriver = os.path.join(os.getcwd(), "chromedriver_linux")
+    path_to_chromedriver = "chromedriver_linux"
     os.environ['PATH'] += path_to_chromedriver
     os.system("sudo chmod a+x chromedriver_linux")
 service = Service(executable_path=path_to_chromedriver)
