@@ -154,10 +154,10 @@ def add_data_to_data_lists(data):
         print("Commited changes")
         os.system("git push")
         time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        print("Pushed file to remote at" + time)
+        print("Pushed file to remote at " + time)
     except:
         time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        print("Update failed at" + time + ". Exiting.")
+        print("Update failed at " + time + ". Exiting.")
         exit(0)
     
 
