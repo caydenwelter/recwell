@@ -6,6 +6,7 @@ from time import gmtime, strftime, sleep
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 import os
+import csv
 
 # init globals
 data_out = [["Location", "Count", "Max", "Timestamp"]]
@@ -138,6 +139,10 @@ def add_data_to_data_lists(data):
 
         # add to data
         data_out.append([elements[0], elements[1], elements[2], elements[3]])
+
+    with open('out.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(data_out)
 
 ### getters and setters
 
