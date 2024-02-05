@@ -7,14 +7,14 @@ from time import sleep
 def main():
 
     # do initial run
-    scraper.update_nick_if_new_data()
-    scraper.update_bakke_if_new_data()
+    scraper.grab_nick_data()
+    scraper.grab_bakke_data()
 
     # every 15 minutes, check for new data
     while(True):
-        sleep(15*60)
-        scraper.update_nick_if_new_data()
-        scraper.update_bakke_if_new_data()
+        sleep(20*60)
+        scraper.grab_nick_data()
+        scraper.grab_bakke_data()
 
 if __name__ == "__main__":
     main()

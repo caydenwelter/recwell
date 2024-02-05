@@ -30,12 +30,9 @@ service = Service(executable_path=path_to_chromedriver)
 nick_locations = ["Nick Level 1 Fitness", "Nick Level 2 Fitness", "Nick Level 3 Fitness", "Nick Power House", "Nick Track", "Soderholm Family Aquatic Center", "Nick Courts 1 & 2", "Nick Courts 3-6", "Nick Courts 7 & 8"]
 bakke_locations = ["Level 1 Fitness", "Level 2 Fitness", "Level 3 Fitness", "Level 4 Fitness", "Bakke Track", "Courts 1&2", "Courts 3&4", "Courts 5-8", "Orbit", "Willow Room", "Cove Pool", "Mount Mendota", "Skybox Suites", "SubZero Ice Center"]
 
-last_run_nick = ""
-last_run_bakke = ""
-
 delimiter = "|"
 
-def update_nick_if_new_data():
+def grab_nick_data():
     # load driver
     driver = webdriver.Chrome(options=options, service=service)
 
@@ -63,28 +60,13 @@ def update_nick_if_new_data():
         else:
             nick_data_temp.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
     
-    # sort the data to standardize it
-    nick_data_temp.sort()
-
-    # initialize
-    this_run = get_last_run_nick()
-
-    # set value
-    for string in nick_data_temp:
-        this_run += string
-    
-    # if the data has changed since the last run
-    if this_run != get_last_run_nick():
-        #collect it
-        add_data_to_data_lists(nick_data_temp)
-
-        #set the string for next time so we don't have duplicate data
-        set_last_run_nick(this_run)
+    # process data
+    add_data_to_data_lists(nick_data_temp)
 
     # quit the driver
     driver.quit()
 
-def update_bakke_if_new_data():
+def grab_bakke_data():
     driver = webdriver.Chrome(options=options, service=service)
 
     # collect the bakke data, put it into an array of strings temporarily, split by |
@@ -111,23 +93,8 @@ def update_bakke_if_new_data():
         else:
             bakke_data_temp.append((location + delimiter + count + delimiter + maximum + delimiter + tracker_time))
     
-    # sort the data to standardize it
-    bakke_data_temp.sort()
-
-    # initialize
-    this_run = get_last_run_bakke()
-
-    # set value
-    for string in bakke_data_temp:
-        this_run += string
-    
-    # if the data has changed since the last run
-    if this_run != get_last_run_bakke():
-        #collect it
-        add_data_to_data_lists(bakke_data_temp)
-
-        #set the string for next time so we don't have duplicate data
-        set_last_run_bakke(this_run)
+    # process data
+    add_data_to_data_lists(bakke_data_temp)
 
     # quit the driver
     driver.quit()
@@ -161,22 +128,3 @@ def add_data_to_data_lists(data):
         time = datetime.now(timezone('America/Chicago')).strftime("%Y-%m-%d %H:%M:%S")
         print("Update failed at " + time + ". Exiting.")
         exit(0)
-    
-
-### getters and setters
-
-def set_last_run_nick(nick):
-    global last_run_nick
-    last_run_nick = nick
-
-def get_last_run_nick():
-    global last_run_nick
-    return last_run_nick
-
-def set_last_run_bakke(bakke):
-    global last_run_bakke
-    last_run_bakke = bakke
-
-def get_last_run_bakke():
-    global last_run_bakke
-    return last_run_bakke
