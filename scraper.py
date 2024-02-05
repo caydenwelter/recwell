@@ -40,7 +40,7 @@ def update_nick_if_new_data():
     time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
     # add a bit of delay to let the counts load
-    sleep(2)
+    sleep(5)
 
     # grab all the trackers
     trackers = driver.find_elements(By.CLASS_NAME, "live-tracker")
@@ -88,7 +88,7 @@ def update_bakke_if_new_data():
     time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
     # add a bit of delay to let the counts load
-    sleep(2)
+    sleep(5)
 
     # grab all the trackers
     trackers = driver.find_elements(By.CLASS_NAME, "live-tracker")
