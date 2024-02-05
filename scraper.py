@@ -16,6 +16,7 @@ if os.name == "nt":
     path_to_chromedriver = "chromedriver.exe"
 elif os.name == "posix":
     path_to_chromedriver = os.path.join(os.getcwd(), "chromedriver_linux")
+    os.environ['PATH'] += path_to_chromedriver
 service = Service(executable_path=path_to_chromedriver)
 
 nick_locations = ["Nick Level 1 Fitness", "Nick Level 2 Fitness", "Nick Level 3 Fitness", "Nick Power House", "Nick Track", "Soderholm Family Aquatic Center", "Nick Courts 1 & 2", "Nick Courts 3-6", "Nick Courts 7 & 8"]
