@@ -7,6 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 import os
 import csv
+from pytz import timezone
+from datetime import datetime
 
 # init globals
 data_out = [["Location", "Count", "Max", "Timestamp"]]
@@ -42,7 +44,7 @@ def update_nick_if_new_data():
 
     # load data and timestamp it
     driver.get(url)
-    time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    time = datetime.now(timezone('America/Chicago')).strftime("%Y-%m-%d %H:%M:%S")
 
     # add a bit of delay to let the counts load
     sleep(sleep_time)
@@ -90,7 +92,7 @@ def update_bakke_if_new_data():
 
     # load data and timestamp it
     driver.get(url)
-    time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    time = datetime.now(timezone('America/Chicago')).strftime("%Y-%m-%d %H:%M:%S")
 
     # add a bit of delay to let the counts load
     sleep(sleep_time)
@@ -153,10 +155,10 @@ def add_data_to_data_lists(data):
         os.system("git commit -m 'update out.csv'")
         print("Commited changes")
         os.system("git push")
-        time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        time = datetime.now(timezone('America/Chicago')).strftime("%Y-%m-%d %H:%M:%S")
         print("Pushed file to remote at " + time)
     except:
-        time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        time = datetime.now(timezone('America/Chicago')).strftime("%Y-%m-%d %H:%M:%S")
         print("Update failed at " + time + ". Exiting.")
         exit(0)
     
