@@ -121,7 +121,7 @@ def add_data_to_data_lists(data):
         print("Staged out.csv")
         os.system("git commit -m 'update out.csv'")
         print("Commited changes")
-        os.system("git push")
+        os.system("git push --set-upstream origin Data")
         time = datetime.now(timezone('America/Chicago')).strftime("%Y-%m-%d %H:%M:%S")
         print("Pushed file to remote at " + time)
     except:
